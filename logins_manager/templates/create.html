@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Restaurant List
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <h1>Create</h1>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script>
+
+  <script type="text/babel">
+    /** @jsx preact.h */
+
+    var data = JSON.parse(`{{ data | safe }}`);
+
+    function App() {
+      return (
+        <div>
+          <Teamplate />
+        </div>
+      );
+    }
+
+    class Teamplate extends preact.Component {
+      constructor() {
+        super();
+        this.state = {
+          fields: [
+            { name: "name1", value: "val1", type: "type1" },
+            { name: "name2", value: "val2", type: "type2" },
+            { name: "name3", value: "val3", type: "type3" },
+          ],
+        };
+      }
+
+      addField = () => {
+        const newField = { name: "newName", value: "valNew", type: "newType" };
+        this.setState((prevState) => ({
+          fields: [...prevState.fields, newField],
+        }));
+      };
+
+      removeField = (index) => {
+        this.setState((prevState) => {
+          const fields = [...prevState.fields];
+          fields.splice(index, 1);
+          return { fields };
+        });
+      };
+
+      render() {
+        return (
+          <form>
+            {this.state.fields.map((field, index) => (
+              <div class="mb-3">
+                <label class="form-label">{field.name}</label>
+                <input type="text" class="form-control mb-1" value="" />
+                <button
+                  class="btn btn-sm btn-outline-secondary"
+                  onClick={() => this.removeField(index)}
+                >
+                  - Remove field
+                </button>
+              </div>
+            ))}
+            <hr />
+            <div>
+              <button
+                type="button"
+                class="btn btn-sm btn-secondary"
+                onClick={this.addField}
+              >
+                + Add property
+              </button>
+            </div>
+          </form>
+        );
+      }
+    }
+
+    preact.render(<App />, document.getElementById("root"));
+  </script>
+</div>
+{% endblock content %}

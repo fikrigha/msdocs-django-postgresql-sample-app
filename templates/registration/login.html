@@ -1,0 +1,20 @@
+<h2>Log In</h2>
+
+
+<form method="post">
+  {% csrf_token %}
+
+  <label>
+    username:
+    <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username">
+  </label>
+
+  <br/>
+
+  <label>
+    password:
+    <input type="password" name="password" autocomplete="current-password" required id="id_password">
+  </label>
+
+  <button type="submit">Log In</button>
+</form>
